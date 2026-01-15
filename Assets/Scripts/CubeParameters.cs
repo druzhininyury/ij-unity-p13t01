@@ -1,23 +1,29 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Collider))]
 [RequireComponent(typeof(Renderer))]
-[RequireComponent(typeof(Rigidbody))]
-public class CubeInitializer : MonoBehaviour
+public class CubeParameters : MonoBehaviour
 {
+    [SerializeField] private float _splitChance = 1f;
+    
     private Renderer _renderer;
     private MaterialPropertyBlock _materialPropertyBlock;
-    
-    public float SplitChance { get; private set; } = 1f;
-    
-    public void SetChance(float chance)
+
+    public float SplitChance
     {
-        SplitChance = chance;
+        get => _splitChance;
+        private set => _splitChance = value;
     }
     
     private void Awake()
     {
         _renderer = GetComponent<Renderer>();
+        Initialize(new Vector3(1f, 1f, 1f), _splitChance);
+    }
+
+    public void Initialize(Vector3 scale, float splitChance)
+    {
+        transform.localScale = scale;
+        SplitChance = splitChance;
         SetRandomColor();
     }
 
