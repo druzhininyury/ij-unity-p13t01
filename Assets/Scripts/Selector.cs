@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Selector : MonoBehaviour
@@ -9,15 +10,16 @@ public class Selector : MonoBehaviour
         _camera = Camera.main;
     }
 
-    public GameObject GetSelection()
+    public Splittable GetSelection(Vector3 inputPosition)
     {
-        Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
+        Ray ray = _camera.ScreenPointToRay(inputPosition);
 
-        if (Physics.Raycast(ray, out RaycastHit hitInfo) == false)
+        if (Physics.Raycast(ray, out RaycastHit hitInfo) == false
+            || hitInfo.collider.TryGetComponent(out Splittable selectedSplittable) == false)
         {
             return null;
         }
 
-        return hitInfo.collider.gameObject;
+        return selectedSplittable;
     }
 }

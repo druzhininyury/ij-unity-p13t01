@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Core : MonoBehaviour
@@ -18,16 +19,16 @@ public class Core : MonoBehaviour
         _inputReader.UserPointAction -= UserPointCallback;
     }
 
-    private void UserPointCallback()
+    private void UserPointCallback(Vector3 inputPosition)
     {
-        GameObject selectedObject = _selector.GetSelection();
+        Splittable selectedSplittable = _selector.GetSelection(inputPosition);
 
-        if (selectedObject == null)
+        if (selectedSplittable == null)
         {
             return;
         }
 
-        List<GameObject> children = _splitter.Split(selectedObject.GetComponent<CubeParameters>());
-        _explosionGenerator.ExplodeObjects(children);
+        List<Splittable> children = _splitter.Split(selectedSplittable);
+        _explosionGenerator.ExplodeObjects(children.Select(child => child.Rigidbody));
     }
 }

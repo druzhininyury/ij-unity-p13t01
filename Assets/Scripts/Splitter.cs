@@ -9,32 +9,31 @@ public class Splitter : MonoBehaviour
     private readonly float _splitScaleMultiplier = 0.5f;
     private readonly float _splitChanceMultiplier = 0.5f;
 
-    public List<GameObject> Split(CubeParameters cubeParameters)
+    public List<Splittable> Split(Splittable splittable)
     {
-        GameObject objectToSplit = cubeParameters.gameObject;
-        bool isSplitRollSuccess = Random.value < cubeParameters.SplitChance;
+        bool isSplitRollSuccess = Random.value < splittable.SplitChance;
         
-        List<GameObject> result = new List<GameObject>();
+        List<Splittable> result = new List<Splittable>();
 
         if (isSplitRollSuccess == false)
         {
-            Destroy(objectToSplit);
+            Destroy(splittable.gameObject);
             return result;
         }
         
-        Vector3 spawnPosition = cubeParameters.transform.position;
-        Quaternion spawnRotation = cubeParameters.transform.rotation;
-        Vector3 spawnScale = cubeParameters.transform.localScale * _splitScaleMultiplier;
-        float childSplitChance = cubeParameters.SplitChance * _splitChanceMultiplier;
+        Vector3 spawnPosition = splittable.transform.position;
+        Quaternion spawnRotation = splittable.transform.rotation;
+        Vector3 spawnScale = splittable.transform.localScale * _splitScaleMultiplier;
+        float childSplitChance = splittable.SplitChance * _splitChanceMultiplier;
         int childrenCount = Random.Range(_minSplitParts, _maxSplitParts + 1);
 
         for (int childIndex = 0; childIndex < childrenCount; ++childIndex)
         {
-            GameObject child = Instantiate(objectToSplit, spawnPosition, spawnRotation);
-            child.GetComponent<CubeParameters>().Initialize(spawnScale, childSplitChance);
+            Splittable child = Instantiate(splittable, spawnPosition, spawnRotation);
+            child.Initialize(spawnScale, childSplitChance);
         }
         
-        Destroy(objectToSplit);
+        Destroy(splittable.gameObject);
         return result;
     }
 }

@@ -1,13 +1,18 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Renderer))]
-public class CubeParameters : MonoBehaviour
+[RequireComponent(typeof(Rigidbody))]
+public class Splittable : MonoBehaviour
 {
     [SerializeField] private float _splitChance = 1f;
     
     private Renderer _renderer;
     private MaterialPropertyBlock _materialPropertyBlock;
+    
+    private Rigidbody _rigidbody;
 
+    public Rigidbody Rigidbody { get; private set; }
+    
     public float SplitChance
     {
         get => _splitChance;
@@ -18,6 +23,8 @@ public class CubeParameters : MonoBehaviour
     {
         _renderer = GetComponent<Renderer>();
         Initialize(new Vector3(1f, 1f, 1f), _splitChance);
+        
+        Rigidbody = GetComponent<Rigidbody>();
     }
 
     public void Initialize(Vector3 scale, float splitChance)
