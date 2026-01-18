@@ -31,6 +31,7 @@ public class Splitter : MonoBehaviour
         {
             Splittable child = Instantiate(splittable, spawnPosition, spawnRotation);
             child.Initialize(spawnScale, childSplitChance);
+            result.Add(child);
         }
         
         Destroy(splittable.gameObject);

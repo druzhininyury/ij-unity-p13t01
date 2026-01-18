@@ -29,6 +29,15 @@ public class Core : MonoBehaviour
         }
 
         List<Splittable> children = _splitter.Split(selectedSplittable);
-        _explosionGenerator.ExplodeObjects(children.Select(child => child.Rigidbody));
+
+        if (children.Count > 0)
+        {
+            _explosionGenerator.ExplodeObjects(children.Select(child => child.Rigidbody));
+        }
+        else
+        {
+            _explosionGenerator.ExplodeAll(selectedSplittable.transform);
+        }
+        
     }
 }
