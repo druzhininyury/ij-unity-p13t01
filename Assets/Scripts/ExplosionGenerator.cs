@@ -8,6 +8,7 @@ public class ExplosionGenerator : MonoBehaviour
     [SerializeField] private float _targetExplosionForce = 8f;
     [SerializeField] private float _targetExplosionRadius = 1f;
 
+    [SerializeField] private LayerMask _layerMask;
     [SerializeField] private float _baseGlobalExplostionRadius = 5f;
     [SerializeField] private float _baseGlobalForceMultiplier = 50f;
 
@@ -27,10 +28,9 @@ public class ExplosionGenerator : MonoBehaviour
         float explosionRadius = _baseGlobalExplostionRadius + 1f / objectDimension;
         float explosionForce = Mathf.Pow(1f / objectDimension, 2f) * _baseGlobalForceMultiplier;
 
-        List<Rigidbody> involvedObjects = Physics.OverlapSphere(objectTransform.position, explosionRadius)
-            .Select(collider => collider.GetComponent<Splittable>())
-            .Where(splittable => splittable != null)
-            .Select(splittable => splittable.Rigidbody)
+        List<Rigidbody> involvedObjects = Physics.OverlapSphere(objectTransform.position, explosionRadius, _layerMask)
+            .Select(collider => collider.attachedRigidbody)
+            .Where(objectRigidbody => objectRigidbody != null)
             .ToList();
 
         foreach (Rigidbody objectRigidbody in involvedObjects)

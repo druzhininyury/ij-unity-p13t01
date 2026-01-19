@@ -11,15 +11,7 @@ public class Splitter : MonoBehaviour
 
     public List<Splittable> Split(Splittable splittable)
     {
-        bool isSplitRollSuccess = Random.value < splittable.SplitChance;
-        
         List<Splittable> result = new List<Splittable>();
-
-        if (isSplitRollSuccess == false)
-        {
-            Destroy(splittable.gameObject);
-            return result;
-        }
         
         Vector3 spawnPosition = splittable.transform.position;
         Quaternion spawnRotation = splittable.transform.rotation;
@@ -34,7 +26,6 @@ public class Splitter : MonoBehaviour
             result.Add(child);
         }
         
-        Destroy(splittable.gameObject);
         return result;
     }
 }

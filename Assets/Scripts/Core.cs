@@ -28,10 +28,11 @@ public class Core : MonoBehaviour
             return;
         }
 
-        List<Splittable> children = _splitter.Split(selectedSplittable);
+        bool isSplitRollSuccess = Random.value < selectedSplittable.SplitChance;
 
-        if (children.Count > 0)
+        if (isSplitRollSuccess)
         {
+            List<Splittable> children = _splitter.Split(selectedSplittable);
             _explosionGenerator.ExplodeObjects(children.Select(child => child.Rigidbody));
         }
         else
@@ -39,5 +40,6 @@ public class Core : MonoBehaviour
             _explosionGenerator.ExplodeAll(selectedSplittable.transform);
         }
         
+        Destroy(selectedSplittable.gameObject);
     }
 }

@@ -6,10 +6,10 @@ public class Splittable : MonoBehaviour
 {
     [SerializeField] private float _splitChance = 1f;
     
+    private readonly int _colorId = Shader.PropertyToID("_Color");
+    
     private Renderer _renderer;
     private MaterialPropertyBlock _materialPropertyBlock;
-    
-    private Rigidbody _rigidbody;
 
     public Rigidbody Rigidbody { get; private set; }
     
@@ -37,7 +37,7 @@ public class Splittable : MonoBehaviour
     private void SetRandomColor()
     {
         MaterialPropertyBlock block = new MaterialPropertyBlock();
-        block.SetColor("_Color", Random.ColorHSV());
+        block.SetColor(_colorId, Random.ColorHSV());
         _renderer.SetPropertyBlock(block);
     }
 }
